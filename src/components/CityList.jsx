@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
 import styles from "./CityList.module.css";
 import Spinner from "./Spinner.jsx";
 import CityItem from "./CityItem.jsx";
 import Message from "./Message.jsx";
+import { useCities } from "../contexts/CitiesProvider.jsx";
 
-function CityList({ cities, isLoading }) {
+function CityList() {
+  const { cities, isLoading } = useCities();
   if (isLoading) return <Spinner />;
 
   if (!cities.length)
@@ -17,15 +18,10 @@ function CityList({ cities, isLoading }) {
   return (
     <ul className={styles.cityList}>
       {cities.map((city) => (
-        <CityItem key={city.id * Math.random()} city={city} />
+        <CityItem key={city.id * 2} city={city} />
       ))}
     </ul>
   );
 }
-
-CityList.propTypes = {
-  cities: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-};
 
 export default CityList;
