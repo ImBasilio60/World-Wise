@@ -23,6 +23,7 @@ function Map() {
     isLoading: isLoadingMap,
     position: geolocationPosition,
     getPosition,
+    setPosition: setPositionGeolocation,
   } = useGeolocation();
 
   const [mapLat, mapLng] = useUrlPosition();
@@ -49,9 +50,11 @@ function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
-        <Button type={"position"} onClick={getPosition}>
-          {isLoadingMap ? "Loading..." : "USE YOUR POSITION"}
-        </Button>
+        {!geolocationPosition && (
+          <Button type={"position"} onClick={getPosition}>
+            {isLoadingMap ? "Loading..." : "USE YOUR POSITION"}
+          </Button>
+        )}
         {cities.map((city) => (
           <Marker
             position={[city.position.lat, city.position.lng]}
@@ -64,7 +67,7 @@ function Map() {
           </Marker>
         ))}
         <SetMapView position={mapPosition} />
-        <ClickMap />
+        <ClickMap onSetPosition={setPositionGeolocation} />
       </MapContainer>
     </div>
   );
@@ -80,14 +83,19 @@ SetMapView.propTypes = {
   position: PropTypes.array,
 };
 
-function ClickMap() {
+function ClickMap({ onSetPosition }) {
   const navigate = useNavigate();
   useMapEvents({
     click: (e) => {
       navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
+      onSetPosition(null);
     },
   });
   return null;
 }
+
+ClickMap.propTypes = {
+  onSetPosition: PropTypes.func,
+};
 
 export default Map;

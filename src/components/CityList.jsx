@@ -17,9 +17,16 @@ function CityList() {
 
   return (
     <ul className={styles.cityList}>
-      {cities.map((city) => (
-        <CityItem key={city.id * 2} city={city} />
-      ))}
+      {cities.map((city) => {
+        const newCity = {
+          ...city,
+          position: {
+            lat: Number(city.position.lat),
+            lng: Number(city.position.lng),
+          },
+        };
+        return <CityItem key={city.id * 2} city={newCity} />;
+      })}
     </ul>
   );
 }

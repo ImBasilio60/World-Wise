@@ -21,9 +21,9 @@ export function useGeolocation(defaultPosition = null) {
       (error) => {
         setError(error.message);
         setIsLoading(false);
-      }
+      },
     );
   }
 
-  return { isLoading, position, error, getPosition };
+  return { isLoading, position, error, getPosition, setPosition };
 }
