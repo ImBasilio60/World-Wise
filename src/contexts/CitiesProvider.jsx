@@ -74,7 +74,7 @@ function CitiesProvider({ children }) {
         });
       }
     }
-    fetchCities().then((r) => console.log(r));
+    fetchCities().then();
   }, []);
 
   async function getCity(id) {
